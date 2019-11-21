@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -44,12 +45,15 @@ public class MainActivity extends AppCompatActivity {
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mNoteList.add(new NoteItem("YES!", "it worked"));
+                /*mNoteList.add(new NoteItem("YES!", "it worked"));
                 mAdapter.notifyItemInserted(mNoteList.size() - 1);
                 Gson gson = new Gson();
                 String json = gson.toJson(mNoteList);
                 prefEditor.putString("NoteList", json);
-                prefEditor.apply();
+                prefEditor.apply();*/
+
+                Intent intent = new Intent(getBaseContext(),NoteMaker.class);
+                startActivity(intent);
             }
         });
     }
