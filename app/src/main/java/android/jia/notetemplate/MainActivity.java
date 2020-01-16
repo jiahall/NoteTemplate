@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
           prefEditor = sharedPreferences.edit();
 
         //getPrefList();
-        testPrefList();
+        preparePrefList();
         buildRecyclerView();
         mAdd = findViewById(R.id.btn_add);
         mAdd.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 prefEditor.apply();*/
 
                 Intent intent = new Intent(getBaseContext(),NoteMaker.class);
+                //Jia when you bundle the title and date over you gotta make sure there IS actually a date put a check in
                 startActivity(intent);
             }
         });
@@ -72,11 +73,13 @@ public class MainActivity extends AppCompatActivity {
         prefEditor.apply();
     }
 
-    private void testPrefList() {
-
+    private void preparePrefList() {
+        //Finds shared preference string containing note list as JSON
         Gson gson = new Gson();
         String json = sharedPreferences.getString("NoteList","");
 
+
+        //Converts to arrayList for RecyclerView
         Type type = new TypeToken<List<NoteItem>>(){}.getType();
         mNoteList = gson.fromJson(json, type);
 

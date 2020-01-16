@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardCornerRadius="4dp"
+    android:layout_margin="4dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
     android:id="@+id/lin_row">
 
     <EditText
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.4"
+        android:layout_weight="0.3"
         android:hint="Heading"
-        android:inputType="text"/>
+        android:inputType="text"
+        android:id="@+id/edt_rowTitle"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:text=":"
         android:textColor="@color/cardview_dark_background"/>
 
@@ -23,7 +32,20 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
         android:hint="Body"
-        android:inputType="text"/>
+        android:inputType="text"
+        android:id="@+id/edt_rowBody"/>
+
+        <Button
+            android:id="@+id/btn_removeRow"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:background="#00FFFFFF"
+            android:layout_marginTop="11dp"
+            android:drawableTop="@drawable/ic_close_black_24dp"
+            />
 
 
 </LinearLayout>
+
+</androidx.cardview.widget.CardView>
