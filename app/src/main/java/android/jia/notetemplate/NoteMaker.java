@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,14 +30,34 @@ public class NoteMaker extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_maker);
 
+        mCancel = findViewById(R.id.btn_cancel);
+        mCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(),MainActivity.class);
+                //Jia when you bundle the title and date over you gotta make sure there IS actually a date put a check in
+                startActivity(intent);
+            }
+        });
 
         mSave = findViewById(R.id.btn_save);
         mSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String s="";
+                for (int i = 0; i < mNoteRow.size(); i++){
+                    s += mNoteRow.get(i).getTitle();
+                    s +=" : ";
+                    s += mNoteRow.get(i).getBody();
+                    s +="\n";
+                }
+                String fullNote =s.substring(0, s.length()-1);
 
-                String body = mNoteRow.get(2).getBody().toString();
-                Toast.makeText(NoteMaker.this, "well it should be fart"+body, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getBaseContext(),MainActivity.class);
+                intent.putExtra("theTitle", mNoteRow.get(0).getBody());
+                intent.putExtra("theBody", fullNote);
+                Toast.makeText(NoteMaker.this,fullNote , Toast.LENGTH_SHORT).show();
+                startActivity(intent);
             }
         });
         mAddLine = findViewById(R.id.btn_addLine);

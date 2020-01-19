@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 .getDefaultSharedPreferences(this.getApplicationContext());
           prefEditor = sharedPreferences.edit();
 
-        //getPrefList();
+        saveNote();
         preparePrefList();
         buildRecyclerView();
         mAdd = findViewById(R.id.btn_add);
@@ -59,17 +59,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getPrefList() {
+    private void saveNote() {
+        // TODO: 19/01/2020 hey gotta make an if statment to check if there actually is an intent 
+        //get data sent over from notemaker class
+        Intent intent = getIntent();
+        String title = intent.getStringExtra("theTitle");
+        String body = intent.getStringExtra("theBody");
 
-        ArrayList<NoteItem>mNoteListX = new ArrayList<>();
-        mNoteListX.add(new NoteItem("hello1","test\nboii\n1"));
-        mNoteListX.add(new NoteItem("hello2","test\nboii\n2"));
-        mNoteListX.add(new NoteItem("hello3","test\nboii\n3"));
-
-
+        //Finds shared preference string containing note list as JSON
         Gson gson = new Gson();
-        String json = gson.toJson(mNoteListX);
-        prefEditor.putString("NoteList", json);
+        String json = sharedPreferences.getString("NoteList","");
+
+
+        //Converts to arrayList for RecyclerView
+        Type type = new TypeToken<List<NoteItem>>(){}.getType();
+        mNoteList = gson.fromJson(json, type);
+
+        //add data to arraylist
+        mNoteList.add(new NoteItem(title, body));
+
+        String note = gson.toJson(mNoteList);
+        prefEditor.putString("NoteList", note);
         prefEditor.apply();
     }
 
