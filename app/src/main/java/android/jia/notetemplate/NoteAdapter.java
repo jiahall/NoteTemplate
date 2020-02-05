@@ -20,6 +20,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public interface OnItemClickListener {
         void onItemClick(int position);
         void onDeleteClick(int position);
+        void onEditClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -31,6 +32,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         public TextView body;
         public Button delete;
         public Button expand;
+        public Button edit;
         public Button contract;
         public LinearLayout layoutOptions;
 
@@ -39,6 +41,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             super(itemView);
             name = itemView.findViewById(R.id.txt_name);
             body = itemView.findViewById(R.id.txt_body);
+            edit = itemView.findViewById((R.id.btnEdit));
             delete= itemView.findViewById(R.id.btnDelete);
             expand= itemView.findViewById(R.id.btn_expand);
             contract= itemView.findViewById(R.id.btn_contract);
@@ -67,6 +70,19 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                         }
                     }
 
+                }
+            });
+
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onEditClick(position);
+                        }
+
+                    }
                 }
             });
 

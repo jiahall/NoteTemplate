@@ -4,15 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -22,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private ArrayList<NoteItem> mNoteList;
+    public static ArrayList<NoteItem> NoteList;
     private RecyclerView mRecyclerview;
     private NoteAdapter mAdapter;
     private RecyclerView.LayoutManager mlayoutManager;
@@ -38,17 +35,23 @@ public class MainActivity extends AppCompatActivity {
                 .getDefaultSharedPreferences(this.getApplicationContext());
           prefEditor = sharedPreferences.edit();
 
-        saveNote();
+        //check intent f or possible created note
+          checkIntent();
+          setButtons();
         preparePrefList();
         buildRecyclerView();
+
+    }
+
+    private void setButtons() {
         mAdd = findViewById(R.id.btn_add);
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*mNoteList.add(new NoteItem("YES!", "it worked"));
-                mAdapter.notifyItemInserted(mNoteList.size() - 1);
+                /*NoteList.add(new NoteItem("YES!", "it worked"));
+                mAdapter.notifyItemInserted(NoteList.size() - 1);
                 Gson gson = new Gson();
-                String json = gson.toJson(mNoteList);
+                String json = gson.toJson(NoteList);
                 prefEditor.putString("NoteList", json);
                 prefEditor.apply();*/
 
@@ -59,13 +62,22 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void saveNote() {
-        // TODO: 19/01/2020 hey gotta make an if statment to check if there actually is an intent 
-        //get data sent over from notemaker class
-        Intent intent = getIntent();
-        String title = intent.getStringExtra("theTitle");
-        String body = intent.getStringExtra("theBody");
+    private void checkIntent() {
+        //check intent for possible created note
+        if(getIntent()!=null && getIntent().getExtras()!=null){
+            Bundle bundle = getIntent().getExtras();
+            if(bundle.getString("theTitle") != null && bundle.getString("theBody") != null){
 
+                //get data sent over from notemaker class
+                String title = bundle.getString("theTitle");
+                String body = bundle.getString("theBody");
+                //Save note to sharedPref
+                saveNote(title, body);
+            }
+        }
+    }
+
+    private void saveNote(String title, String body) {
         //Finds shared preference string containing note list as JSON
         Gson gson = new Gson();
         String json = sharedPreferences.getString("NoteList","");
@@ -73,12 +85,15 @@ public class MainActivity extends AppCompatActivity {
 
         //Converts to arrayList for RecyclerView
         Type type = new TypeToken<List<NoteItem>>(){}.getType();
-        mNoteList = gson.fromJson(json, type);
+        NoteList = gson.fromJson(json, type);
 
         //add data to arraylist
-        mNoteList.add(new NoteItem(title, body));
+        if (NoteList != null) {
+            NoteList.add(new NoteItem(title, body));
+        }
 
-        String note = gson.toJson(mNoteList);
+        //converts arraylist to json string and saves to shared preferences
+        String note = gson.toJson(NoteList);
         prefEditor.putString("NoteList", note);
         prefEditor.apply();
     }
@@ -91,32 +106,38 @@ public class MainActivity extends AppCompatActivity {
 
         //Converts to arrayList for RecyclerView
         Type type = new TypeToken<List<NoteItem>>(){}.getType();
-        mNoteList = gson.fromJson(json, type);
+        NoteList = gson.fromJson(json, type);
 
     }
 
 
     public void removeItem(int position){
-        mNoteList.remove(position);
+        NoteList.remove(position);
         Gson gson = new Gson();
-        String json = gson.toJson(mNoteList);
+        String json = gson.toJson(NoteList);
         prefEditor.putString("NoteList", json);
         prefEditor.apply();
         mAdapter.notifyItemRemoved(position);
     }
 
     public void changeItem(int position, String text){
-        mNoteList.get(position).changeName(text);
+        NoteList.get(position).changeName(text);
         mAdapter.notifyItemChanged(position);
     }
 
+    public void editItem(int position){
+        String editNote = NoteList.get(position).getBody();
+        Intent intent = new Intent(getBaseContext(), NoteMaker.class);
+        intent.putExtra("editNote", editNote);
+        startActivity(intent);
+    }
 
 
     public void buildRecyclerView() {
         mRecyclerview = findViewById(R.id.recyclerView);
         mRecyclerview.setHasFixedSize(true);
         mlayoutManager = new LinearLayoutManager(this);
-        mAdapter = new NoteAdapter(mNoteList);
+        mAdapter = new NoteAdapter(NoteList);
 
         mRecyclerview.setLayoutManager(mlayoutManager);
         mRecyclerview.setAdapter(mAdapter);
@@ -132,6 +153,9 @@ public class MainActivity extends AppCompatActivity {
                 removeItem(position);
             }
 
+            @Override
+            public void onEditClick(int position) { editItem(position); }
+
 
         });
 
@@ -139,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
+    public static List<NoteItem> getNoteList() {
+        return NoteList;
+    }
 }
