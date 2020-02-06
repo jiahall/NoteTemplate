@@ -72,10 +72,14 @@ public class NoteMaker extends AppCompatActivity {
                     //then transforms list into string
                     StringBuilder s = new StringBuilder();
                     for (int i = 0; i < mNoteRow.size(); i++) {
-                        s.append(mNoteRow.get(i).getTitle());
-                        s.append(": ");
-                        s.append( mNoteRow.get(i).getBody());
-                        s.append( "\n");
+                        //makes sure the title is not empty
+                        if(!mNoteRow.get(i).getTitle().trim().equals("")) {
+                            s.append(mNoteRow.get(i).getTitle());
+                            s.append(": ");
+                            s.append(mNoteRow.get(i).getBody());
+                            s.append("\n");
+
+                        }
                     }
                     //removes last empty line
                     s.delete(s.length()-1,s.length());
@@ -167,7 +171,6 @@ public class NoteMaker extends AppCompatActivity {
             String b = line.substring(0, posA);
             String c = line.substring(posA + 2);
             mNoteRow.add(new NoteRow(b, c));
-
         }
     }
     public void removeItem(int position){
