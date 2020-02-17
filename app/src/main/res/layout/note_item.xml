@@ -18,6 +18,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:background="#00FFFFFF"
+
             android:drawableTop="@drawable/ic_expand_more_black_24dp" />
 
         <Button
@@ -56,9 +57,10 @@
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 android:layout_marginHorizontal="6dp"
-                android:background="#009688"
+                android:background="@drawable/circle"
                 android:text="Use"
-                android:textColorHint="#00C71717" />
+                android:drawableTop="@drawable/ic_share_green_24dp"
+                 />
 
             <Button
                 android:id="@+id/btnEdit"
@@ -66,9 +68,10 @@
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 android:layout_marginHorizontal="6dp"
-                android:background="#FF5722"
+                android:background="@drawable/circle"
                 android:text="Edit"
-                android:textColorHint="#00C71717"
+                android:drawableTop="@drawable/ic_edit_yellow_24dp"
+
 
                 />
 
@@ -78,9 +81,10 @@
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 android:layout_marginHorizontal="6dp"
-                android:background="#CF1010"
+                android:background="@drawable/circle"
                 android:text="Delete"
-                android:textColorHint="#00C71717"
+                android:drawableTop="@drawable/ic_delete_red_24dp"
+
 
                 />
         </LinearLayout>
@@ -89,8 +93,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linearLayout_options"
-            android:text="hello\nlkjlkj\njkhkjh"
             android:visibility="gone"
+            android:padding="16dp"
+            android:textColor="#FF000000"
             />
 
 

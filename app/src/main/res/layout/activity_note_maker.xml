@@ -23,13 +23,29 @@
 
     <Button
         android:id="@+id/btn_addLine"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="1"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/colorGreen"
         android:text="Add"
         app:layout_constraintBottom_toTopOf="@id/options"
         app:layout_constraintTop_toBottomOf="@id/recyclerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_addSpace"
+        android:layout_margin="16dp"/>
+
+    <Button
+        android:id="@+id/btn_addSpace"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:drawableTop="@drawable/ic_more_vert_black_24dp"
+        app:layout_constraintBottom_toTopOf="@id/options"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_addLine"
         android:layout_margin="16dp"/>
 
     <LinearLayout

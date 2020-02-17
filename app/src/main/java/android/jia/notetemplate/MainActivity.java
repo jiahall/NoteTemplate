@@ -132,6 +132,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void useItem(int position){
+        String data = NoteList.get(position).getBody();
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TITLE, "Send message");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, data);
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, "Send intent to");
+        startActivity(shareIntent);
+    }
+
 
     public void buildRecyclerView() {
         mRecyclerview = findViewById(R.id.recyclerView);
@@ -145,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.setOnItemClickListener(new NoteAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                changeItem(position,"clicked");
+                useItem(position);
             }
 
             @Override
@@ -155,6 +167,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onEditClick(int position) { editItem(position); }
+
+            @Override
+            public void onSendClick(int position) {useItem(position);
+
+
+            }
 
 
         });
